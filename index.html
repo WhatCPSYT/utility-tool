@@ -3,18 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <title>Utility Tool Download</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+    h1 { color: #333; }
+    h2 { color: #0066cc; }
+    pre { background: #eee; padding: 10px; border-radius: 5px; }
+    a.button {
+      display: inline-block; padding: 10px 20px; margin: 10px 10px 20px 0;
+      background: #0066cc; color: white; text-decoration: none;
+      border-radius: 5px;
+    }
+    a.button:hover { background: #004c99; }
+  </style>
 </head>
 <body>
   <h1>Utility Tool</h1>
   <p>Wybierz wersję do pobrania:</p>
-  <ul>
-    <li><a href="windows_tool.bat" download>Pobierz dla Windows (.bat)</a></li>
-    <li><a href="linux_tool.sh" download>Pobierz dla Linux/Lubuntu (.sh)</a></li>
-  </ul>
-  <p>Instrukcja:</p>
-  <h3>Windows</h3>
-  <p>Pobierz plik <code>.bat</code>, uruchom jako administrator.</p>
-  <h3>Linux/Lubuntu</h3>
-  <p>Pobierz plik <code>.sh</code>, nadaj prawa <code>chmod +x linux_tool.sh</code>, uruchom przez <code>sudo ./linux_tool.sh</code>.</p>
+  <a href="windows_tool.bat" class="button" download>Pobierz dla Windows (.bat)</a>
+  <a href="linux_tool.sh" class="button" download>Pobierz dla Linux/Lubuntu (.sh)</a>
+
+  <h2>Instrukcja dla Windows</h2>
+  <ol>
+    <li>Pobierz plik <code>windows_tool.bat</code>.</li>
+    <li>Kliknij prawym przyciskiem myszy i wybierz <b>Uruchom jako administrator</b>.</li>
+    <li>Postępuj zgodnie z menu w programie.</li>
+  </ol>
+
+  <h2>Instrukcja dla Linux/Lubuntu</h2>
+  <ol>
+    <li>Pobierz plik <code>linux_tool.sh</code>.</li>
+    <li>Otwórz terminal i przejdź do folderu, gdzie zapisano plik:</li>
+    <ul>
+      <li>Jeśli plik jest na <b>Pulpicie</b> (polska wersja):
+        <pre>cd ~/Pulpit</pre>
+      </li>
+      <li>Jeśli plik jest na <b>Desktop</b> (angielska wersja):
+        <pre>cd ~/Desktop</pre>
+      </li>
+      <li>Jeśli plik jest w <b>Pobrane</b> (polska wersja):
+        <pre>cd ~/Pobrane</pre>
+      </li>
+      <li>Jeśli plik jest w <b>Downloads</b> (angielska wersja):
+        <pre>cd ~/Downloads</pre>
+      </li>
+    </ul>
+    <li>Nadaj prawa do uruchamiania:
+      <pre>chmod +x linux_tool.sh</pre>
+    </li>
+    <li>Uruchom program jako administrator:
+      <pre>sudo ./linux_tool.sh</pre>
+    </li>
+    <li>Postępuj zgodnie z menu w programie.</li>
+  </ol>
+
+  <h2>Informacje</h2>
+  <p>
+    Autor: WhatCPS?<br>
+    Wersja: Developerska v1.0<br>
+    Data: Styczeń 2026
+  </p>
 </body>
 </html>
