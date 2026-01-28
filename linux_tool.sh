@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.0"
+VERSION="Dev"
 GITHUB_URL="https://raw.githubusercontent.com/WhatCPSYT/utility-tool/refs/heads/main/linux_tool.sh"
 GITHUB_VER_URL="https://raw.githubusercontent.com/WhatCPSYT/utility-tool/refs/heads/main/linuxversion.txt"
 
