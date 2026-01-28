@@ -38,7 +38,7 @@ update_script() {
 menu() {
   clear
   echo "============================================"
-  echo "         Linux Utility Tool v$VERSION"
+  echo "         Linux Utility Tool v.$VERSION"
   echo "============================================"
   echo "--- Ustawienia kont ------------------------"
   echo "1.  Utworz konto z haslem"
