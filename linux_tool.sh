@@ -72,25 +72,24 @@ menu() {
   echo "25. Nadaj odczyt"
   echo "26. Zmien wlasciciela (chown)"
   echo "27. Zmien grupe (chgrp)"
-  echo "28. chmod 646 plik.txt"
-  echo "29. Legenda uprawnien i sciezek"
+  echo "28. Legenda uprawnien i sciezek"
   echo
   echo "--- Operacje na plikach --------------------"
-  echo "30. Lista plikow (ls)"
-  echo "31. Szczegolowa lista (ls -l)"
-  echo "32. Utworz plik (touch)"
-  echo "33. Wyswietl plik (cat)"
-  echo "34. Edytor Nano"
-  echo "35. Edytor MCEdit"
-  echo "36. Utworz folder (mkdir)"
-  echo "37. Usun pusty folder (rmdir)"
-  echo "38. Usun plik/folder (rm -r)"
+  echo "29. Lista plikow (ls)"
+  echo "30. Szczegolowa lista (ls -l)"
+  echo "31. Utworz plik (touch)"
+  echo "32. Wyswietl plik (cat)"
+  echo "33. Edytor Nano"
+  echo "34. Edytor MCEdit"
+  echo "35. Utworz folder (mkdir)"
+  echo "36. Usun pusty folder (rmdir)"
+  echo "37. Usun plik/folder (rm -r)"
   echo
   echo "--- Inne -----------------------------------"
-  echo "39. Sprawdz aktualizacje"
-  echo "40. Credits"
-  echo "41. Wyjscie"
-  echo "42. Self-Destruct"
+  echo "38. Sprawdz aktualizacje"
+  echo "39. Credits"
+  echo "40. Wyjscie"
+  echo "41. Self-Destruct"
   echo "============================================"
   read -p "Podaj numer opcji: " wybor
 
@@ -101,15 +100,16 @@ menu() {
     13) changeshell ;; 14) mkhome ;; 15) catshadow ;; 16) showgid ;;
     17) addgroup ;; 18) catgroup ;; 19) creategroup ;; 20) deletegroup ;;
     21) groupdetails ;; 22) fullaccess ;; 23) modify ;; 24) writeperm ;;
-    25) readperm ;; 26) changeowner ;; 27) changegrp ;; 28) chmod646 ;;
-    29) legend ;; 30) listfiles ;; 31) listlong ;; 32) createfile ;;
-    33) catfile ;; 34) opennano ;; 35) openmcedit ;; 36) makedir ;;
-    37) removedir ;; 38) removeforce ;; 39) update_script ;; 40) credits ;;
-    41) end ;; 42) selfdestruct ;;
+    25) readperm ;; 26) changeowner ;; 27) changegrp ;; 28) legend ;; 
+    29) listfiles ;; 30) listlong ;; 31) createfile ;; 32) catfile ;; 
+    33) opennano ;; 34) openmcedit ;; 35) makedir ;; 36) removedir ;; 
+    37) removeforce ;; 38) update_script ;; 39) credits ;; 40) end ;; 
+    41) selfdestruct ;;
     *) menu ;;
   esac
 }
 
+# --- FUNKCJE KONT ---
 createpass() {
   read -p "Podaj nazwe uzytkownika: " u
   if id "$u" &>/dev/null; then echo "Konto $u juz istnieje."; read -p "Enter..."; menu; fi
@@ -258,6 +258,7 @@ showgid() {
   menu
 }
 
+# --- FUNKCJE GRUP ---
 addgroup() {
   read -p "Podaj nazwe uzytkownika: " u
   if ! id "$u" &>/dev/null; then echo "Konto $u nie istnieje."; read -p "Enter..."; menu; fi
@@ -301,6 +302,7 @@ groupdetails() {
   menu
 }
 
+# --- UPRAWNIENIA ---
 fullaccess() {
   read -p "Podaj sciezke folderu: " f
   if [ ! -e "$f" ]; then echo "Sciezka nie istnieje."; read -p "Enter..."; menu; fi
@@ -355,28 +357,20 @@ changegrp() {
   menu
 }
 
-chmod646() {
-  read -p "Podaj nazwe pliku: " f
-  chmod 646 "$f"
-  echo "Uprawnienia 646 zostaly nadane dla pliku $f."
-  read -p "Enter..."
-  menu
-}
-
 legend() {
   clear
   echo "============================================"
-  echo "Legenda uprawnien (chmod):"
+  echo "   LEGENDA UPRAWNIEN I WARTOSCI"
   echo "============================================"
   echo "777 - Full access (pelny dostep)"
   echo "755 - Modify (modyfikacja)"
-  echo "646 - rw-r--rw- (Odczyt/Zapis dla wszystkich procz grupy)"
   echo "u+w - Write (tylko zapis)"
   echo "u+r - Read (tylko odczyt)"
   echo "--------------------------------------------"
-  echo "Wartosci: 4-Odczyt, 2-Zapis, 1-Wykonywanie"
+  echo "Wartosci chmod:"
+  echo "4 = Odczyt (r), 2 = Zapis (w), 1 = Wykonanie (x)"
   echo "--------------------------------------------"
-  echo "Jak podawac sciezke folderu:"
+  echo "Jak podawac sciezke:"
   echo "- Podaj pelna sciezke, np. /home/user/Dokumenty"
   echo "============================================"
   
@@ -384,6 +378,7 @@ legend() {
   menu
 }
 
+# --- PLIKI I EDYTORY ---
 listfiles() { ls -F; read -p "Enter..."; menu; }
 listlong() { ls -l; read -p "Enter..."; menu; }
 createfile() { read -p "Podaj nazwe pliku: " f; touch "$f"; echo "Plik $f zostal utworzony."; read -p "Enter..."; menu; }
