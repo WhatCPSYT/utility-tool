@@ -1,21 +1,50 @@
 #!/bin/bash
 
+VERSION="1.0"
+GITHUB_URL="https://github.com/WhatCPSYT/utility-tool/blob/main/linux_tool.sh"
+GITHUB_VER_URL="https://github.com/WhatCPSYT/utility-tool/blob/main/linuxversion.txt"
+
 if [ "$EUID" -ne 0 ]; then
   echo "Ten program wymaga uprawnien administratora (root)."
   echo "Uruchom ponownie jako root (np. sudo $0)"
   exit
 fi
 
+update_script() {
+  clear
+  echo "Sprawdzanie dostepnosci aktualizacji..."
+  REMOTE_VER=$(curl -s "$GITHUB_VER_URL")
+
+  if [ -z "$REMOTE_VER" ]; then
+    echo "Nie udalo sie polaczyc z GitHubem lub brak pliku wersji."
+  elif [ "$VERSION" != "$REMOTE_VER" ]; then
+    echo "Dostepna nowa wersja: $REMOTE_VER (Obecna: $VERSION)"
+    read -p "Czy chcesz zaktualizowac program? (T/N): " choice
+    if [[ "$choice" =~ ^[Tt]$ ]]; then
+      echo "Pobieranie nowej wersji..."
+      curl -s "$GITHUB_URL" -o "$0"
+      echo "Aktualizacja zakonczona! Restartowanie programu..."
+      sleep 2
+      bash "$0"
+      exit
+    fi
+  else
+    echo "Masz najnowsza wersje ($VERSION)."
+  fi
+  read -p "Enter..."
+  menu
+}
+
 menu() {
   clear
   echo "============================================"
-  echo "         Linux Utility Tool v1.0"
+  echo "         Linux Utility Tool v$VERSION"
   echo "============================================"
   echo "--- Ustawienia kont ------------------------"
   echo "1.  Utworz konto z haslem"
   echo "2.  Utworz konto bez hasla"
   echo "3.  Usun konto"
-  echo "4.  Pokaz liste kont"
+  echo "4.  Pokaz liste kont (passwd)"
   echo "5.  Informacje o systemie"
   echo "6.  Aktywuj konto"
   echo "7.  Dezaktywuj konto"
@@ -24,54 +53,59 @@ menu() {
   echo "10. Ustaw date wygasniecia"
   echo "11. Resetuj haslo"
   echo "12. Szczegoly konta"
+  echo "13. Zmien powloke (bash/sh)"
+  echo "14. Stworz katalog domowy"
+  echo "15. Pokaz shadow (hasla)"
+  echo "16. Pokaz GID"
   echo
   echo "--- Ustawienia grup ------------------------"
-  echo "13. Dodaj konto do grupy"
-  echo "14. Pokaz liste grup"
-  echo "15. Utworz nowa grupe"
-  echo "16. Usun grupe"
-  echo "17. Szczegoly grupy"
+  echo "17. Dodaj konto do grupy"
+  echo "18. Pokaz liste grup (group)"
+  echo "19. Utworz nowa grupe"
+  echo "20. Usun grupe"
+  echo "21. Szczegoly grupy"
   echo
-  echo "--- Uprawnienia do folderow ----------------"
-  echo "18. Nadaj pelny dostep (root)"
-  echo "19. Nadaj modyfikacje"
-  echo "20. Nadaj zapis"
-  echo "21. Nadaj odczyt"
-  echo "22. Legenda uprawnien i sciezek"
+  echo "--- Uprawnienia i Wlasciciele --------------"
+  echo "22. Nadaj pelny dostep (root)"
+  echo "23. Nadaj modyfikacje"
+  echo "24. Nadaj zapis"
+  echo "25. Nadaj odczyt"
+  echo "26. Zmien wlasciciela (chown)"
+  echo "27. Zmien grupe (chgrp)"
+  echo "28. chmod 646 plik.txt"
+  echo "29. Legenda uprawnien i sciezek"
+  echo
+  echo "--- Operacje na plikach --------------------"
+  echo "30. Lista plikow (ls)"
+  echo "31. Szczegolowa lista (ls -l)"
+  echo "32. Utworz plik (touch)"
+  echo "33. Wyswietl plik (cat)"
+  echo "34. Edytor Nano"
+  echo "35. Edytor MCEdit"
+  echo "36. Utworz folder (mkdir)"
+  echo "37. Usun pusty folder (rmdir)"
+  echo "38. Usun plik/folder (rm -r)"
   echo
   echo "--- Inne -----------------------------------"
-  echo "23. Credits"
-  echo "24. Wyjscie"
-  echo "25. Self-Destruct"
+  echo "39. Sprawdz aktualizacje"
+  echo "40. Credits"
+  echo "41. Wyjscie"
+  echo "42. Self-Destruct"
   echo "============================================"
   read -p "Podaj numer opcji: " wybor
 
   case $wybor in
-    1) createpass ;;
-    2) createnopass ;;
-    3) deleteuser ;;
-    4) listusers ;;
-    5) sysinfo ;;
-    6) activate ;;
-    7) deactivate ;;
-    8) fullname ;;
-    9) comment ;;
-    10) expire ;;
-    11) resetpass ;;
-    12) userdetails ;;
-    13) addgroup ;;
-    14) listgroups ;;
-    15) creategroup ;;
-    16) deletegroup ;;
-    17) groupdetails ;;
-    18) fullaccess ;;
-    19) modify ;;
-    20) writeperm ;;
-    21) readperm ;;
-    22) legend ;;
-    23) credits ;;
-    24) end ;;
-    25) selfdestruct ;;
+    1) createpass ;; 2) createnopass ;; 3) deleteuser ;; 4) catpasswd ;;
+    5) sysinfo ;; 6) activate ;; 7) deactivate ;; 8) fullname ;;
+    9) comment ;; 10) expire ;; 11) resetpass ;; 12) userdetails ;;
+    13) changeshell ;; 14) mkhome ;; 15) catshadow ;; 16) showgid ;;
+    17) addgroup ;; 18) catgroup ;; 19) creategroup ;; 20) deletegroup ;;
+    21) groupdetails ;; 22) fullaccess ;; 23) modify ;; 24) writeperm ;;
+    25) readperm ;; 26) changeowner ;; 27) changegrp ;; 28) chmod646 ;;
+    29) legend ;; 30) listfiles ;; 31) listlong ;; 32) createfile ;;
+    33) catfile ;; 34) opennano ;; 35) openmcedit ;; 36) makedir ;;
+    37) removedir ;; 38) removeforce ;; 39) update_script ;; 40) credits ;;
+    41) end ;; 42) selfdestruct ;;
     *) menu ;;
   esac
 }
@@ -104,9 +138,16 @@ deleteuser() {
   menu
 }
 
-listusers() {
-  echo "Lista kont lokalnych:"
-  cut -d: -f1 /etc/passwd
+catpasswd() {
+  echo "Lista kont lokalnych (/etc/passwd):"
+  cat /etc/passwd
+  read -p "Enter..."
+  menu
+}
+
+catshadow() {
+  echo "Zawartosc pliku shadow (hasla):"
+  cat /etc/shadow
   read -p "Enter..."
   menu
 }
@@ -192,6 +233,31 @@ userdetails() {
   menu
 }
 
+changeshell() {
+  read -p "Podaj nazwe uzytkownika: " u
+  read -p "Podaj sciezke powloki (np. /bin/bash): " s
+  chsh -s "$s" "$u"
+  echo "Powloka uzytkownika $u zostala zmieniona na $s."
+  read -p "Enter..."
+  menu
+}
+
+mkhome() {
+  read -p "Podaj nazwe uzytkownika: " u
+  mkdir -p "/home/$u"
+  chown "$u:$u" "/home/$u"
+  echo "Katalog domowy dla $u zostal utworzony."
+  read -p "Enter..."
+  menu
+}
+
+showgid() {
+  read -p "Podaj nazwe uzytkownika: " u
+  echo "GID uzytkownika $u: $(id -g $u)"
+  read -p "Enter..."
+  menu
+}
+
 addgroup() {
   read -p "Podaj nazwe uzytkownika: " u
   if ! id "$u" &>/dev/null; then echo "Konto $u nie istnieje."; read -p "Enter..."; menu; fi
@@ -203,9 +269,9 @@ addgroup() {
   menu
 }
 
-listgroups() {
-  echo "Lista grup lokalnych:"
-  cut -d: -f1 /etc/group
+catgroup() {
+  echo "Lista grup lokalnych (/etc/group):"
+  cat /etc/group
   read -p "Enter..."
   menu
 }
@@ -271,6 +337,32 @@ readperm() {
   menu
 }
 
+changeowner() {
+  read -p "Podaj uzytkownika: " u
+  read -p "Podaj sciezke: " f
+  chown "$u" "$f"
+  echo "Wlasciciel $f zostal zmieniony na $u."
+  read -p "Enter..."
+  menu
+}
+
+changegrp() {
+  read -p "Podaj grupe: " g
+  read -p "Podaj sciezke: " f
+  chgrp "$g" "$f"
+  echo "Grupa $f zostala zmieniona na $g."
+  read -p "Enter..."
+  menu
+}
+
+chmod646() {
+  read -p "Podaj nazwe pliku: " f
+  chmod 646 "$f"
+  echo "Uprawnienia 646 zostaly nadane dla pliku $f."
+  read -p "Enter..."
+  menu
+}
+
 legend() {
   clear
   echo "============================================"
@@ -278,13 +370,37 @@ legend() {
   echo "============================================"
   echo "777 - Full access (pelny dostep)"
   echo "755 - Modify (modyfikacja)"
+  echo "646 - rw-r--rw- (Odczyt/Zapis dla wszystkich procz grupy)"
   echo "u+w - Write (tylko zapis)"
   echo "u+r - Read (tylko odczyt)"
   echo "--------------------------------------------"
+  echo "Wartosci: 4-Odczyt, 2-Zapis, 1-Wykonywanie"
+  echo "--------------------------------------------"
   echo "Jak podawac sciezke folderu:"
   echo "- Podaj pelna sciezke, np. /home/user/Dokumenty"
-  echo "- Jesli folder ma spacje w nazwie, uzyj \"\""
   echo "============================================"
+  
+  read -p "Enter..."
+  menu
+}
+
+listfiles() { ls -F; read -p "Enter..."; menu; }
+listlong() { ls -l; read -p "Enter..."; menu; }
+createfile() { read -p "Podaj nazwe pliku: " f; touch "$f"; echo "Plik $f zostal utworzony."; read -p "Enter..."; menu; }
+catfile() { read -p "Podaj nazwe pliku: " f; cat "$f"; read -p "Enter..." ; menu; }
+opennano() { read -p "Podaj nazwe pliku: " f; nano "$f"; menu; }
+openmcedit() { read -p "Podaj nazwe pliku: " f; mcedit "$f"; menu; }
+makedir() { read -p "Podaj nazwe folderu: " d; mkdir -p "$d"; echo "Folder $d zostal utworzony."; read -p "Enter..."; menu; }
+removedir() { read -p "Podaj nazwe pustego folderu: " d; rmdir "$d"; echo "Folder $d zostal usuniety."; read -p "Enter..."; menu; }
+
+removeforce() {
+  read -p "Podaj sciezke do usuniecia (rm -r): " f
+  echo "UWAGA: Ta operacja usunie plik lub folder $f na zawsze!"
+  read -p "Czy chcesz kontynuowac? (T/N): " choice
+  if [[ "$choice" =~ ^[Tt]$ ]]; then
+    rm -rf "$f"
+    echo "Element $f zostal usuniety."
+  fi
   read -p "Enter..."
   menu
 }
@@ -295,8 +411,8 @@ credits() {
   echo "            Linux Utility Tool"
   echo "============================================"
   echo "Autor: WhatCPS?"
-  echo "Wersja: Developerska v1.0"
-  echo "Data: Styczen 2026"
+  echo "Wersja: $VERSION"
+  echo "Ostatnia aktualizacja: 28 Styczen 2026"
   echo "============================================"
   read -p "Enter..."
   menu
@@ -311,19 +427,13 @@ selfdestruct() {
   clear
   echo "============================================"
   echo "Ta operacja wylaczy ten program i usunie go z komputera."
-  echo "Jesli chcesz znowu pobrac, wejdz na strone: https://twoja-strona.github.io"
   echo "============================================"
   read -p "Czy chcesz kontynuowac? (T/N): " choice
-  if [[ "$choice" =~ ^[Nn]$ ]]; then
-    menu
-  elif [[ "$choice" =~ ^[Tt]$ ]]; then
-    echo "Program zostanie zamkniety i usuniety..."
-    sleep 3
+  if [[ "$choice" =~ ^[Tt]$ ]]; then
     rm -- "$0"
     exit
-  else
-    menu
   fi
+  menu
 }
 
 menu
