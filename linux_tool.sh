@@ -1,8 +1,8 @@
 #!/bin/bash
 
 VERSION="1.0"
-GITHUB_URL="https://github.com/WhatCPSYT/utility-tool/blob/main/linux_tool.sh"
-GITHUB_VER_URL="https://github.com/WhatCPSYT/utility-tool/blob/main/linuxversion.txt"
+GITHUB_URL="https://raw.githubusercontent.com/WhatCPSYT/utility-tool/refs/heads/main/linux_tool.sh"
+GITHUB_VER_URL="https://raw.githubusercontent.com/WhatCPSYT/utility-tool/refs/heads/main/linuxversion.txt"
 
 if [ "$EUID" -ne 0 ]; then
   echo "Ten program wymaga uprawnien administratora (root)."
